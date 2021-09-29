@@ -10,6 +10,7 @@
 #import "Menu.h"
 #import "SDImageCache.h"
 #import "MWCommon.h"
+#import "MWAdView.h"
 
 @implementation Menu
 
@@ -21,7 +22,7 @@
 		self.title = @"MWPhotoBrowser";
         
         // Clear cache for testing
-        [[SDImageCache sharedImageCache] clearDisk];
+		 [[SDImageCache sharedImageCache] clearDiskOnCompletion:nil];
         [[SDImageCache sharedImageCache] clearMemory];
         
         _segmentedControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"Push", @"Modal", nil]];
@@ -192,6 +193,11 @@
             photo = [MWPhoto photoWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"photo2" ofType:@"jpg"]]];
             photo.caption = @"The London Eye is a giant Ferris wheel situated on the banks of the River Thames, in London, England.";
 			[photos addObject:photo];
+
+			MWAdView* adView = [[MWAdView alloc] init];
+			adView.caption = @"This is an ad";
+			[photos addObject:adView];
+
             photo = [MWPhoto photoWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"photo3" ofType:@"jpg"]]];
             photo.caption = @"York Floods";
             [photos addObject:photo];
@@ -1191,6 +1197,27 @@
     if (index < _photos.count)
         return [_photos objectAtIndex:index];
     return nil;
+}
+
+- (void)photoBrowser:(MWPhotoBrowser *)photoBrowser configurePhotoPageAtIndex:(NSUInteger)index view:(UIView*)view {
+
+	id <MWPhoto> photo = nil;
+	if (index < _photos.count) {
+		photo = [_photos objectAtIndex:index];
+	}
+	if (photo == nil) {
+		return;
+	}
+	if (![photo isKindOfClass:MWAdView.class]) {
+		return;
+	}
+
+	MWAdView* adView = (MWAdView*)photo;
+
+	UIView* test = [[UIView alloc] init];
+	test.backgroundColor = [UIColor redColor];
+	test.frame = CGRectMake(100, 100, 100, 100);
+	[view addSubview:test];
 }
 
 - (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser thumbPhotoAtIndex:(NSUInteger)index {

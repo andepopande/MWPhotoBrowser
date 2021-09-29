@@ -899,6 +899,9 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
 	page.frame = [self frameForPageAtIndex:index];
     page.index = index;
     page.photo = [self photoAtIndex:index];
+	if ([_delegate respondsToSelector:@selector(photoBrowser:configurePhotoPageAtIndex:view:)]) {
+		[_delegate photoBrowser:self configurePhotoPageAtIndex:index view: page];
+	}
 }
 
 - (MWZoomingScrollView *)dequeueRecycledPage {

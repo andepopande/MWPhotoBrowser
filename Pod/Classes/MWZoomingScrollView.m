@@ -211,9 +211,9 @@
 }
 
 - (void)showLoadingIndicator {
-    self.zoomScale = 0;
-    self.minimumZoomScale = 0;
-    self.maximumZoomScale = 0;
+    self.zoomScale = 1;
+    self.minimumZoomScale = 1;
+    self.maximumZoomScale = 1;
     _loadingIndicator.progress = 0;
     _loadingIndicator.hidden = NO;
     [self hideImageFailure];

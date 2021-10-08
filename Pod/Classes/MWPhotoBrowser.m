@@ -1076,6 +1076,16 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
 	// Update nav when page changes
 	[self updateNavigation];
+
+	MWPhoto *photo = [self photoAtIndex:_currentPageIndex];
+	for (MWZoomingScrollView *page in _visiblePages) {
+		 if (page.photo == photo) {
+			 if ([_delegate respondsToSelector:@selector(photoBrowser:didFinishScrollingToPhotoAtIndex:view:)]) {
+				 [_delegate photoBrowser:self didFinishScrollingToPhotoAtIndex:_currentPageIndex view:page];
+			 }
+			 break;
+		 }
+	}
 }
 
 #pragma mark - Navigation

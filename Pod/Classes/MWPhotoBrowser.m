@@ -485,7 +485,7 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
 
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
-    [self layoutVisiblePages];
+    //[self layoutVisiblePages];
 }
 
 - (void)layoutVisiblePages {
@@ -629,7 +629,7 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
         [self performLayout];
         [self.view setNeedsLayout];
     }
-    
+   [self layoutVisiblePages];
 }
 
 - (NSUInteger)numberOfPhotos {

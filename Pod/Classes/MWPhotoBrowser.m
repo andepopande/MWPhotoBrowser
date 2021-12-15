@@ -700,6 +700,14 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
     return value;
 }
 
+- (BOOL)shouldAutoCloseCaptionView {
+    BOOL value = YES; // default
+    if ([self.delegate respondsToSelector:@selector(photoBrowserShouldAutoCloseCaptionView:)]) {
+        value = [self.delegate photoBrowserShouldAutoCloseCaptionView:self];
+    }
+    return value;
+}
+
 - (void)setPhotoSelected:(BOOL)selected atIndex:(NSUInteger)index {
     if (_displaySelectionButtons) {
         if ([self.delegate respondsToSelector:@selector(photoBrowser:photoAtIndex:selectedChanged:)]) {
@@ -1534,6 +1542,9 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
 
 // Enable/disable control visiblity timer
 - (void)hideControlsAfterDelay {
+   if (![self shouldAutoCloseCaptionView]) {
+      return;
+   }
 	if (![self areControlsHidden]) {
         [self cancelControlHiding];
 		_controlVisibilityTimer = [NSTimer scheduledTimerWithTimeInterval:self.delayToHideElements target:self selector:@selector(hideControls) userInfo:nil repeats:NO];
